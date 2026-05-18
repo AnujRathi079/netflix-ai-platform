@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: black;
+  color: white;
+}
+
+/* ADD THIS AT THE END */
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
