@@ -9,11 +9,16 @@ import {
   User,
 } from "lucide-react";
 
+import { useRouter } from "next/navigation";
+
 export default function MobileNav() {
+
+  const router = useRouter();
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-black border-t border-zinc-800 flex justify-around py-3 z-50 md:hidden">
 
+      {/* HOME */}
       <Link
         href="/"
         className="flex flex-col items-center text-white"
@@ -24,16 +29,20 @@ export default function MobileNav() {
         </span>
       </Link>
 
-      <Link
-        href="/search/batman"
+      {/* SEARCH */}
+      <button
+        onClick={() =>
+          router.push("/")
+        }
         className="flex flex-col items-center text-white"
       >
         <Search size={22} />
         <span className="text-xs mt-1">
           Search
         </span>
-      </Link>
+      </button>
 
+      {/* AI */}
       <Link
         href="/ai"
         className="flex flex-col items-center text-white"
@@ -44,6 +53,7 @@ export default function MobileNav() {
         </span>
       </Link>
 
+      {/* PROFILE */}
       <Link
         href="/profile"
         className="flex flex-col items-center text-white"
