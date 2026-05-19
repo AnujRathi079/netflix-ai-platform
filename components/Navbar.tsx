@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import {
   Search,
   Bell,
@@ -8,6 +9,8 @@ import {
 } from "lucide-react";
 
 import ProfileSidebar from "./ProfileSidebar";
+
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
 
@@ -17,25 +20,54 @@ export default function Navbar() {
   const [openSidebar, setOpenSidebar] =
     useState(false);
 
+  const [search, setSearch] =
+    useState("");
+
+  const router = useRouter();
+
+  const handleSearch = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+
+    if (
+      e.key === "Enter" &&
+      search.trim()
+    ) {
+
+      router.push(
+        `/search/${search}`
+      );
+
+      setShowSearch(false);
+    }
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent">
 
-        {/* TOP NAV */}
+        {/* TOP */}
         <div className="flex items-center justify-between px-4 py-4">
 
           {/* LOGO */}
-          <h1 className="text-red-600 font-extrabold text-2xl tracking-wider">
+          <h1
+            onClick={() =>
+              router.push("/")
+            }
+            className="text-red-600 font-extrabold text-2xl tracking-wider cursor-pointer"
+          >
             NETFLIX
           </h1>
 
-          {/* RIGHT SIDE */}
+          {/* RIGHT */}
           <div className="flex items-center gap-4">
 
-            {/* SEARCH BUTTON */}
+            {/* SEARCH */}
             <button
               onClick={() =>
-                setShowSearch(!showSearch)
+                setShowSearch(
+                  !showSearch
+                )
               }
               className="hover:scale-110 transition"
             >
@@ -46,12 +78,11 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* NOTIFICATION */}
+            {/* BELL */}
             <button
               onClick={() =>
                 setOpenSidebar(true)
               }
-              className="hover:scale-110 transition"
             >
               <Bell size={22} />
             </button>
@@ -59,7 +90,9 @@ export default function Navbar() {
             {/* PROFILE */}
             <button
               onClick={() =>
-                setOpenSidebar(true)
+                router.push(
+                  "/profile"
+                )
               }
             >
               <img
@@ -79,6 +112,15 @@ export default function Navbar() {
 
             <input
               type="text"
+              value={search}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value
+                )
+              }
+              onKeyDown={
+                handleSearch
+              }
               placeholder="Search movies..."
               className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 outline-none text-white placeholder:text-gray-400"
             />
