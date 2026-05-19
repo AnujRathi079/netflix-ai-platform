@@ -6,11 +6,8 @@ import MovieRow from "./MovieRow";
 
 type Props = {
   trending: any[];
-
   topRated: any[];
-
   actionMovies: any[];
-
   kidsMovies: any[];
 };
 
@@ -20,14 +17,12 @@ export default function HomeContent({
   actionMovies,
   kidsMovies,
 }: Props) {
-  const [profile, setProfile] =
-    useState("");
+
+  const [profile, setProfile] = useState("");
 
   useEffect(() => {
     const saved =
-      localStorage.getItem(
-        "netflix-profile"
-      ) || "";
+      localStorage.getItem("netflix-profile") || "";
 
     setProfile(saved);
   }, []);
@@ -35,20 +30,21 @@ export default function HomeContent({
   // KIDS MODE
   if (profile === "Kids") {
     return (
-      <div className="px-6 mt-10 space-y-10">
-        
+      <div className="px-4 md:px-8 mt-8 space-y-8">
+
         <MovieRow
           title="Kids Movies"
           movies={kidsMovies}
         />
+
       </div>
     );
   }
 
   // NORMAL MODE
   return (
-    <div className="px-6 mt-[-100px] relative z-20 space-y-10">
-      
+    <div className="px-4 md:px-8 mt-8 space-y-10">
+
       <MovieRow
         title="Trending Now"
         movies={trending}
@@ -63,6 +59,7 @@ export default function HomeContent({
         title="Action Movies"
         movies={actionMovies}
       />
+
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import MovieCard from "./MovieCard";
+"use client";
+
 import HoverMovieCard from "./HoverMovieCard";
 
 type Props = {
@@ -11,26 +12,35 @@ export default function MovieRow({
   movies = [],
 }: Props) {
   return (
-    <div className="mb-10">
+    <section className="space-y-4">
 
-      <h2 className="text-2xl font-bold mb-4 text-white">
+      {/* TITLE */}
+      <h2 className="text-xl md:text-2xl font-bold text-white px-1">
         {title}
       </h2>
 
-      <div className="flex gap-4 overflow-x-scroll scrollbar-hide py-4">
+      {/* MOVIE ROW */}
+      <div className="flex gap-3 md:gap-5 overflow-x-auto scrollbar-hide pb-2">
+
         {movies.length > 0 ? (
           movies.map((movie) => (
-            <HoverMovieCard
+            <div
               key={movie.id}
-              movie={movie}
-            />
+              className="flex-shrink-0 w-[140px] md:w-[220px]"
+            >
+
+              <HoverMovieCard movie={movie} />
+
+            </div>
           ))
         ) : (
           <p className="text-gray-400">
             No movies found
           </p>
         )}
+
       </div>
-    </div>
+
+    </section>
   );
 }

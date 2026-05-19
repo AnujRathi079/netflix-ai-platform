@@ -2,7 +2,7 @@
 
 const profiles = [
   {
-    name: "Anuj",
+    name: "You",
     image: "https://i.pravatar.cc/150?img=12",
   },
   {
@@ -19,8 +19,7 @@ export default function ProfileSelector() {
   return (
     <div className="pt-24 md:pt-32 pb-10 text-center">
 
-      <h1 className="text-3xl md:text-5xl font-bold mb-8">
-        Who's Watching?
+      <h1 className="text-2xl md:text-5xl font-bold mb-6">        Who's Watching?
       </h1>
 
       <div className="flex justify-center gap-4 md:gap-10 flex-wrap">
