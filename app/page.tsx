@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import GenreMovies from "@/components/GenreMovies";
 import RecentMovies from "@/components/RecentMovies";
 import ContinueWatchingRow from "@/components/ContinueWatchingRow";
-import ProfileSelector from "@/components/ProfileSelector";
+
 import HomeContent from "@/components/HomeContent";
 import MoodMovies from "@/components/MoodMovies";
 import AIMovieAssistant from "@/components/AIMovieAssistant";
@@ -53,7 +53,7 @@ export default async function Home() {
 
       {/* PROFILE SELECTOR */}
       <div className="px-4 sm:px-6 md:px-10 pt-4">
-        <ProfileSelector />
+        
       </div>
 
       {/* HERO BANNER */}
