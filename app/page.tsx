@@ -32,10 +32,10 @@ export default async function Home() {
   const randomMovie =
     trending?.length > 0
       ? trending[
-          Math.floor(
-            Math.random() * trending.length
-          )
-        ]
+      Math.floor(
+        Math.random() * trending.length
+      )
+      ]
       : null;
 
   // HERO TRAILER
@@ -45,8 +45,7 @@ export default async function Home() {
       : null;
 
   return (
-    <main className="bg-black min-h-screen text-white overflow-x-hidden">
-
+    <main className="bg-black min-h-screen text-white overflow-x-hidden pb-24">
       {/* NAVBAR */}
       <div className="sticky top-0 z-50">
         <Navbar />

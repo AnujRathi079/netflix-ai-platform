@@ -1,75 +1,58 @@
 "use client";
 
-import Link from "next/link";
-
-import {
-  signIn,
-  signOut,
-  useSession,
-} from "next-auth/react";
-
-import SearchBar from "./SearchBar";
-
-import ThemeToggle from "./ThemeToggle";
+import { Search, Bell } from "lucide-react";
 
 export default function Navbar() {
-
-  const { data: session } =
-    useSession();
-
   return (
-    <div className="fixed top-0 left-0 w-full z-50 bg-black/70 backdrop-blur-md px-8 py-4 flex items-center justify-between border-b border-zinc-800">
+    <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent">
 
-      {/* LOGO */}
-      <h1 className="text-red-600 text-4xl font-extrabold tracking-wide">
-        NETFLIX
-      </h1>
+      <div className="flex items-center justify-between px-4 md:px-10 py-4">
 
-      {/* RIGHT SIDE */}
-      <div className="flex items-center gap-6">
+        {/* LEFT */}
+        <div className="flex items-center gap-4">
 
-        {/* SEARCH */}
-        <SearchBar />
+          {/* NETFLIX LOGO */}
+          <h1 className="text-red-600 font-extrabold text-2xl md:text-4xl tracking-wider">
+            NETFLIX
+          </h1>
 
-        {/* THEME TOGGLE */}
-        <ThemeToggle />
+        </div>
 
-        {session ? (
-          <>
-            {/* USER NAME */}
-            <p className="text-white font-medium">
-              {session.user?.name}
-            </p>
+        {/* RIGHT */}
+        <div className="flex items-center gap-3">
 
-            {/* FAVORITES */}
-            <Link
-              href="/favorites"
-              className="text-white font-semibold hover:text-red-500 transition"
-            >
-              Favorites
-            </Link>
+          {/* SEARCH */}
+          <div className="hidden sm:flex items-center bg-zinc-900 border border-zinc-700 rounded-md px-3 py-2">
 
-            {/* SIGN OUT */}
-            <button
-              onClick={() =>
-                signOut()
-              }
-              className="bg-red-600 hover:bg-red-700 transition px-4 py-2 rounded-lg text-white font-medium"
-            >
-              Sign Out
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() =>
-              signIn()
-            }
-            className="bg-red-600 hover:bg-red-700 transition px-4 py-2 rounded-lg text-white font-medium"
-          >
-            Sign In
+            <Search size={18} className="text-gray-400" />
+
+            <input
+              type="text"
+              placeholder="Search..."
+              className="bg-transparent outline-none text-sm px-2 w-32 md:w-48"
+            />
+
+          </div>
+
+          {/* MOBILE SEARCH ICON */}
+          <button className="sm:hidden">
+            <Search size={22} />
           </button>
-        )}
+
+          {/* NOTIFICATION */}
+          <Bell size={22} className="cursor-pointer" />
+
+          {/* PROFILE */}
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="profile"
+            className="w-9 h-9 rounded-md border border-zinc-700"
+          />
+
+        </div>
+
       </div>
-    </div>
+
+    </header>
   );
 }
