@@ -1,48 +1,76 @@
-"use client";
+import Banner from "@/components/Banner";
+import Navbar from "@/components/Navbar";
+import GenreMovies from "@/components/GenreMovies";
+import RecentMovies from "@/components/RecentMovies";
+import ContinueWatchingRow from "@/components/ContinueWatchingRow";
+import HomeContent from "@/components/HomeContent";
+import MoodMovies from "@/components/MoodMovies";
+import AIMovieAssistant from "@/components/AIMovieAssistant";
 
-import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import {
+  getTrendingMovies,
+  getTopRated,
+  getActionMovies,
+  getKidsMovies,
+} from "@/lib/tmdb";
 
-export default function Dashboard() {
-  const { data: session, status } = useSession();
+export default async function DashboardPage() {
 
-  const router = useRouter();
+  const trending =
+    await getTrendingMovies();
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [status, router]);
+  const topRated =
+    await getTopRated();
 
-  if (status === "loading") {
-    return <h1>Loading...</h1>;
-  }
+  const actionMovies =
+    await getActionMovies();
+
+  const kidsMovies =
+    await getKidsMovies();
+
+  const randomMovie =
+    trending?.length > 0
+      ? trending[
+          Math.floor(
+            Math.random() *
+              trending.length
+          )
+        ]
+      : null;
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-5">
-      <h1 className="text-4xl font-bold">
-        Dashboard
-      </h1>
+    <main className="bg-black min-h-screen text-white overflow-x-hidden">
 
-      <img
-        src={session?.user?.image || ""}
-        alt="profile"
-        className="w-24 h-24 rounded-full"
-      />
+      <Navbar />
 
-      <h2 className="text-2xl">
-        {session?.user?.name}
-      </h2>
+      {randomMovie && (
+        <Banner
+          movie={randomMovie}
+          trailerKey={null}
+        />
+      )}
 
-      <p>{session?.user?.email}</p>
+      <div className="relative z-20 space-y-16 pb-28">
 
-      <button
-        onClick={() => signOut()}
-        className="bg-red-500 text-white px-5 py-2 rounded"
-      >
-        Logout
-      </button>
-    </div>
+        <ContinueWatchingRow />
+
+        <MoodMovies />
+
+        <RecentMovies />
+
+        <HomeContent
+          trending={trending}
+          topRated={topRated}
+          actionMovies={actionMovies}
+          kidsMovies={kidsMovies}
+        />
+
+        <GenreMovies />
+
+      </div>
+
+      <AIMovieAssistant />
+
+    </main>
   );
 }

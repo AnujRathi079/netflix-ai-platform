@@ -1,111 +1,147 @@
-import Banner from "@/components/Banner";
-import Navbar from "@/components/Navbar";
-import GenreMovies from "@/components/GenreMovies";
-import RecentMovies from "@/components/RecentMovies";
-import ContinueWatchingRow from "@/components/ContinueWatchingRow";
-
-import HomeContent from "@/components/HomeContent";
-import MoodMovies from "@/components/MoodMovies";
-import AIMovieAssistant from "@/components/AIMovieAssistant";
-import MobileNav from "@/components/MobileNav";
+"use client";
 
 import {
-  getTrendingMovies,
-  getTopRated,
-  getActionMovies,
-  getMovieTrailer,
-  getKidsMovies,
-} from "@/lib/tmdb";
+  signIn,
+  useSession,
+} from "next-auth/react";
 
-export default async function Home() {
+import {
+  useRouter,
+} from "next/navigation";
 
-  // FETCH MOVIES
-  const trending = await getTrendingMovies();
+import {
+  useEffect,
+} from "react";
 
-  const topRated = await getTopRated();
+export default function LandingPage() {
 
-  const actionMovies = await getActionMovies();
+  const {
+    data: session,
+    status,
+  } = useSession();
 
-  const kidsMovies = await getKidsMovies();
+  const router = useRouter();
 
-  // RANDOM HERO MOVIE
-  const randomMovie =
-    trending?.length > 0
-      ? trending[
-      Math.floor(
-        Math.random() * trending.length
-      )
-      ]
-      : null;
+  // AUTO REDIRECT
+  useEffect(() => {
 
-  // HERO TRAILER
-  const trailer =
-    randomMovie
-      ? await getMovieTrailer(randomMovie.id)
-      : null;
+    if (session) {
+      router.push("/dashboard");
+    }
+
+  }, [session, router]);
+
+  // LOADING
+  if (status === "loading") {
+
+    return (
+      <main className="bg-black min-h-screen flex items-center justify-center text-white">
+
+        <div className="animate-pulse text-2xl">
+          Loading...
+        </div>
+
+      </main>
+    );
+  }
 
   return (
-    <main className="bg-black min-h-screen text-white overflow-x-hidden pb-24">
-      {/* NAVBAR */}
-      <div className="sticky top-0 z-50">
-        <Navbar />
-      </div>
+    <main className="relative min-h-screen overflow-hidden">
 
-      {/* PROFILE SELECTOR */}
-      <div className="px-4 sm:px-6 md:px-10 pt-4">
-        
-      </div>
+      {/* VIDEO BACKGROUND */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover"
+      >
 
-      {/* HERO BANNER */}
-      {randomMovie && (
-        <section className="relative h-[70vh] sm:h-[80vh] md:h-screen">
-          <Banner
-            movie={randomMovie}
-            trailerKey={trailer}
-          />
-        </section>
-      )}
+        <source
+          src="https://www.w3schools.com/howto/rain.mp4"
+          type="video/mp4"
+        />
+
+      </video>
+
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px]" />
+
+      {/* NETFLIX HEADER */}
+      <div className="absolute top-0 left-0 w-full z-20 px-6 py-5">
+
+        <h1 className="text-red-600 text-4xl md:text-5xl font-extrabold tracking-wider">
+
+          NETFLIX
+
+        </h1>
+
+      </div>
 
       {/* CONTENT */}
-      <div className="relative z-20 space-y-10 sm:space-y-14 md:space-y-16 pb-28 px-4 sm:px-6 md:px-10">
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
 
-        {/* CONTINUE WATCHING */}
-        <section>
-          <ContinueWatchingRow />
-        </section>
+        <div className="w-full max-w-md bg-black/60 border border-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-10 shadow-2xl">
 
-        {/* MOOD AI */}
-        <section>
-          <MoodMovies />
-        </section>
+          {/* TITLE */}
+          <h1 className="text-white text-4xl md:text-5xl font-bold leading-tight">
 
-        {/* RECENTLY WATCHED */}
-        <section>
-          <RecentMovies />
-        </section>
+            Unlimited movies,
+            TV shows and more.
 
-        {/* MAIN ROWS */}
-        <section>
-          <HomeContent
-            trending={trending}
-            topRated={topRated}
-            actionMovies={actionMovies}
-            kidsMovies={kidsMovies}
-          />
-        </section>
+          </h1>
 
-        {/* GENRES */}
-        <section>
-          <GenreMovies />
-        </section>
+          <p className="text-gray-300 mt-5 text-lg">
+
+            Watch anywhere.
+            Cancel anytime.
+
+          </p>
+
+          {/* LOGIN BUTTON */}
+          <button
+            onClick={() =>
+              signIn("google")
+            }
+            className="w-full mt-10 bg-red-600 hover:bg-red-700 transition-all duration-300 py-4 rounded-2xl text-white text-lg font-semibold hover:scale-[1.02]"
+          >
+
+            Continue with Google
+
+          </button>
+
+          {/* FEATURES */}
+          <div className="mt-10 space-y-4">
+
+            <div className="flex items-center gap-3 text-gray-300">
+
+              <div className="w-2 h-2 rounded-full bg-red-600" />
+
+              AI Movie Recommendations
+
+            </div>
+
+            <div className="flex items-center gap-3 text-gray-300">
+
+              <div className="w-2 h-2 rounded-full bg-red-600" />
+
+              Personalized Watch History
+
+            </div>
+
+            <div className="flex items-center gap-3 text-gray-300">
+
+              <div className="w-2 h-2 rounded-full bg-red-600" />
+
+              Premium Streaming Experience
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
-
-      {/* AI ASSISTANT */}
-      <AIMovieAssistant />
-
-      {/* MOBILE NAVIGATION */}
-      <MobileNav />
 
     </main>
   );
