@@ -4,9 +4,11 @@ const MONGODB_URI =
   process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
+
   throw new Error(
-    "Please add MONGODB_URI"
+    "MONGODB_URI missing"
   );
+
 }
 
 let cached =
@@ -25,8 +27,9 @@ if (!cached) {
 
 export async function connectDB() {
 
-  if (cached.conn)
+  if (cached.conn) {
     return cached.conn;
+  }
 
   if (!cached.promise) {
 

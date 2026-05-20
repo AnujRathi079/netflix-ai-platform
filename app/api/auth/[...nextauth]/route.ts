@@ -13,16 +13,17 @@ const handler = NextAuth({
     GoogleProvider({
 
       clientId:
-        process.env
-          .GOOGLE_CLIENT_ID!,
+        process.env.GOOGLE_CLIENT_ID!,
 
       clientSecret:
-        process.env
-          .GOOGLE_CLIENT_SECRET!,
+        process.env.GOOGLE_CLIENT_SECRET!,
 
     }),
 
   ],
+
+  secret:
+    process.env.NEXTAUTH_SECRET,
 
   callbacks: {
 
@@ -34,14 +35,12 @@ const handler = NextAuth({
 
         await connectDB();
 
-        // CHECK USER
         const existingUser =
           await User.findOne({
             email:
               user.email,
           });
 
-        // CREATE USER
         if (
           !existingUser
         ) {
@@ -64,6 +63,7 @@ const handler = NextAuth({
       } catch (error) {
 
         console.log(
+          "SIGN IN ERROR:",
           error
         );
 
@@ -77,10 +77,6 @@ const handler = NextAuth({
     },
 
   },
-
-  secret:
-    process.env
-      .NEXTAUTH_SECRET,
 
 });
 
